@@ -1,5 +1,5 @@
 
-package itonayungtama;
+package javaapplication12;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,99 +7,173 @@ import java.awt.event.*;
 
 public class Performance extends JFrame{
     
-    private String name;
-    private double price;
-    private JLabel lb1;
-    private JLabel lb2;
+    // Inner class for menu items
+    private static class MenuItem {
+        private String name;
+        private double price;
+        
+        public MenuItem(String name, double price) {
+            this.name = name;
+            this.price = price;
+        }
+        
+        public String getName() {
+            return name;
+        }
+        
+        public double getPrice() {
+            return price;
+        }
+    }
+    
+    private JLabel totalLabel;
+    private JPanel itemsPanel;
     private JPanel leftsquarePanel;
-    private JSpinner quantitySpinner; 
+    private MenuItem[] menuItems;
+    private java.util.List<JSpinner> quantitySpinners; 
     
-    
-    public void setName(String name){
-        this.name = name;
-    }
-    
-    public void setPrice(double price){
-        this.price = price;
-    }
-    
-    public String getName(){
-        return name;
-    }
-    
-    public double getPrice(){
-        return price;
-    }
     
     public Performance(){
         Font fon = new Font("Arial", Font.BOLD, 13);
         setLayout(new BorderLayout());
-        JLabel burgerLabel = new JLabel();
-        JPanel centerPanel = new JPanel();
-        JPanel westHolderPanel = new JPanel();
-          
-        lb1 = new JLabel("");
-        lb1.setFont(fon);
-        lb2 = new JLabel("Price: P 0.00");
-        lb2.setFont(fon);
-        
-        burgerLabel.setFont(fon);
         setSize(1280, 600);
-        add(lb1);
         setTitle("Restaurant Item");
-        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        quantitySpinners = new java.util.ArrayList<>();
+        
+        // Original leftsquarePanel with border
         leftsquarePanel = new JPanel();
         leftsquarePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         leftsquarePanel.setBackground(Color.LIGHT_GRAY);
-        leftsquarePanel.setPreferredSize(new Dimension(600, 200));
-        leftsquarePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 7));
-        add(leftsquarePanel, BorderLayout.WEST);
-        leftsquarePanel.add(Box.createVerticalStrut(10));
-        leftsquarePanel.add(burgerLabel);
-        leftsquarePanel.add(lb1);
-        leftsquarePanel.add(Box.createVerticalStrut(10));
-        leftsquarePanel.add(lb2);
-        leftsquarePanel.add(Box.createVerticalStrut(20));
+        leftsquarePanel.setPreferredSize(new Dimension(300, 100));
+        leftsquarePanel.setLayout(new BorderLayout());
         
-
+        // Total label in leftsquarePanel
+        totalLabel = new JLabel("Grand Total: P 0.00");
+        totalLabel.setFont(fon);
+        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        totalPanel.setBackground(Color.LIGHT_GRAY);
+        totalPanel.add(totalLabel);
+        leftsquarePanel.add(totalPanel, BorderLayout.SOUTH);
+        
+        // Items panel (separate panel for displaying all items)
+        itemsPanel = new JPanel();
+        itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
+        itemsPanel.setBackground(Color.LIGHT_GRAY);
+        itemsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        // Center panel for items
+        JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(Color.WHITE);
-        add(centerPanel, BorderLayout.WEST);
+        centerPanel.add(itemsPanel, BorderLayout.CENTER);
         
-        westHolderPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+        // West holder panel
+        JPanel westHolderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         westHolderPanel.add(leftsquarePanel);
         
         add(westHolderPanel, BorderLayout.WEST);
-        
-        SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
-        quantitySpinner = new JSpinner(spinnerModel);
-        JComponent editor = quantitySpinner.getEditor();
-        ((JSpinner.DefaultEditor) editor).getTextField().setColumns(3);
-        JPanel spinnerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        spinnerPanel.setBackground(Color.LIGHT_GRAY);
-        spinnerPanel.add(new JLabel("Quantity:"));
-        spinnerPanel.add(quantitySpinner);
-        leftsquarePanel.add(spinnerPanel);
+        add(centerPanel, BorderLayout.CENTER);
         
         setVisible(true);
-   
     }
-    public void updateDisplay() {
-        if (lb1 != null) {
-            lb1.setText(getName());
+    public void updateTotal() {
+        if (totalLabel != null && menuItems != null && quantitySpinners != null) {
+            double grandTotal = 0.0;
+            for (int i = 0; i < menuItems.length && i < quantitySpinners.size(); i++) {
+                int quantity = (Integer) quantitySpinners.get(i).getValue();
+                grandTotal += menuItems[i].getPrice() * quantity;
+            }
+            totalLabel.setText("Grand Total: P " + String.format("%.2f", grandTotal));
         }
-        if (lb2 != null) {
-            lb2.setText("P" + getPrice());  
-        }   
+    }
+    
+    public void setMenuItems(MenuItem[] items) {
+        this.menuItems = items;
+        if (itemsPanel != null && items != null) {
+            itemsPanel.removeAll();
+            quantitySpinners.clear();
+            
+            Font itemFont = new Font("Arial", Font.PLAIN, 13);
+            Font priceFont = new Font("Arial", Font.BOLD, 13);
+            
+            for (MenuItem item : items) {
+                // Create panel for each item
+                JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+                itemPanel.setBackground(Color.WHITE);
+                itemPanel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.GRAY, 1),
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                ));
+                itemPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+                itemPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+                
+                // Item name
+                JLabel nameLabel = new JLabel(item.getName());
+                nameLabel.setFont(itemFont);
+                nameLabel.setPreferredSize(new Dimension(120, 25));
+                itemPanel.add(nameLabel);
+                
+                // Price label
+                JLabel priceLabel = new JLabel("P " + String.format("%.2f", item.getPrice()));
+                priceLabel.setFont(priceFont);
+                priceLabel.setPreferredSize(new Dimension(100, 25));
+                itemPanel.add(priceLabel);
+                
+                // Quantity label
+                JLabel qtyLabel = new JLabel("Qty:");
+                qtyLabel.setFont(itemFont);
+                itemPanel.add(qtyLabel);
+                
+                // Quantity spinner
+                SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 99, 1);
+                JSpinner spinner = new JSpinner(spinnerModel);
+                JComponent editor = spinner.getEditor();
+                ((JSpinner.DefaultEditor) editor).getTextField().setColumns(3);
+                itemPanel.add(spinner);
+                
+                // Subtotal label
+                JLabel subtotalLabel = new JLabel("Subtotal: P 0.00");
+                subtotalLabel.setFont(itemFont);
+                subtotalLabel.setPreferredSize(new Dimension(150, 25));
+                itemPanel.add(subtotalLabel);
+                
+                // Update subtotal and grand total when quantity changes
+                spinner.addChangeListener(e -> {
+                    int quantity = (Integer) spinner.getValue();
+                    double subtotal = item.getPrice() * quantity;
+                    subtotalLabel.setText("Subtotal: P " + String.format("%.2f", subtotal));
+                    updateTotal();
+                });
+                
+                quantitySpinners.add(spinner);
+                itemsPanel.add(itemPanel);
+                itemsPanel.add(Box.createVerticalStrut(5));
+            }
+            
+            itemsPanel.revalidate();
+            itemsPanel.repaint();
+            updateTotal();
+        }
     }
       
     public static void main(String[] args){
         SwingUtilities.invokeLater(() -> {
-            Performance item = new Performance();
-            item.setName("Burger");
-            item.setPrice(20);
-            item.updateDisplay(); 
+            Performance frame = new Performance();
+            
+            // Create multiple menu items
+            MenuItem burger = new MenuItem("Burger", 20.00);
+            MenuItem pizza = new MenuItem("Pizza", 150.00);
+            MenuItem fries = new MenuItem("Fries", 50.00);
+            MenuItem drink = new MenuItem("Drink", 30.00);
+            MenuItem pasta = new MenuItem("Pasta", 120.00);
+            MenuItem salad = new MenuItem("Salad", 80.00);
+            MenuItem chicken = new MenuItem("Chicken", 100.00);
+            MenuItem soup = new MenuItem("Soup", 60.00);
+            
+            // Set menu items array
+            MenuItem[] menuItems = {burger, pizza, fries, drink, pasta, salad, chicken, soup};
+            frame.setMenuItems(menuItems);
         }); 
     }
 }
