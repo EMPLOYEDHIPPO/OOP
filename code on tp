@@ -1,16 +1,18 @@
 
 package itonayungtama;
 
-
-import java.util.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class Performance extends JFrame{
     
     private String name;
     private double price;
     private JLabel lb1;
+    private JLabel lb2;
+    private JPanel leftsquarePanel;
+    private JSpinner quantitySpinner; 
     
     
     public void setName(String name){
@@ -29,36 +31,76 @@ public class Performance extends JFrame{
         return price;
     }
     
-    
-    
     public Performance(){
-        FlowLayout fl = new FlowLayout();
         Font fon = new Font("Arial", Font.BOLD, 13);
-        lb1 = new JLabel("Item: " + getName());
+        setLayout(new BorderLayout());
+        JLabel burgerLabel = new JLabel();
+        JPanel centerPanel = new JPanel();
+        JPanel westHolderPanel = new JPanel();
+          
+        lb1 = new JLabel("");
         lb1.setFont(fon);
+        lb2 = new JLabel("Price: P 0.00");
+        lb2.setFont(fon);
+        
+        burgerLabel.setFont(fon);
         setSize(1280, 600);
-        setLayout(fl);
         add(lb1);
         setTitle("Restaurant Item");
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        leftsquarePanel = new JPanel();
+        leftsquarePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        leftsquarePanel.setBackground(Color.LIGHT_GRAY);
+        leftsquarePanel.setPreferredSize(new Dimension(600, 200));
+        leftsquarePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 7));
+        add(leftsquarePanel, BorderLayout.WEST);
+        leftsquarePanel.add(Box.createVerticalStrut(10));
+        leftsquarePanel.add(burgerLabel);
+        leftsquarePanel.add(lb1);
+        leftsquarePanel.add(Box.createVerticalStrut(10));
+        leftsquarePanel.add(lb2);
+        leftsquarePanel.add(Box.createVerticalStrut(20));
+        
+
+        centerPanel.setBackground(Color.WHITE);
+        add(centerPanel, BorderLayout.WEST);
+        
+        westHolderPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+        westHolderPanel.add(leftsquarePanel);
+        
+        add(westHolderPanel, BorderLayout.WEST);
+        
+        SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
+        quantitySpinner = new JSpinner(spinnerModel);
+        JComponent editor = quantitySpinner.getEditor();
+        ((JSpinner.DefaultEditor) editor).getTextField().setColumns(3);
+        JPanel spinnerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        spinnerPanel.setBackground(Color.LIGHT_GRAY);
+        spinnerPanel.add(new JLabel("Quantity:"));
+        spinnerPanel.add(quantitySpinner);
+        leftsquarePanel.add(spinnerPanel);
+        
+        setVisible(true);
+   
     }
-    
     public void updateDisplay() {
         if (lb1 != null) {
-            lb1.setText("Item: " + getName());
-            lb1.revalidate(); 
-            lb1.repaint();
-        }    
+            lb1.setText(getName());
+        }
+        if (lb2 != null) {
+            lb2.setText("P" + getPrice());  
+        }   
     }
-
-    
+      
     public static void main(String[] args){
-        Performance item = new Performance();
-        item.setName("Burger");
-        item.setPrice(20);
-        item.updateDisplay();
-        item.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            Performance item = new Performance();
+            item.setName("Burger");
+            item.setPrice(20);
+            item.updateDisplay(); 
+        }); 
     }
 }
 
