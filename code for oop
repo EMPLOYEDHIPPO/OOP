@@ -1,71 +1,9 @@
 import java.util.*;
 
-public class Main {
-
-    private static class MenuItem {
-        private final int id;
-        private final String name;
-        private final double price;
-        private final String category;
-
-        MenuItem(int id, String name, double price, String category) {
-            this.id = id;
-            this.name = name;
-            this.price = price;
-            this.category = category;
-        }
-    }
-
-    private static final List<MenuItem> MENU_ITEMS = new ArrayList<>();
-    private static final Map<MenuItem, Integer> ORDER = new LinkedHashMap<>();
-    private static final Scanner SCANNER = new Scanner(System.in);
-
-    static {
-        MENU_ITEMS.add(new MenuItem(1, "Trattoria Risotto", 240.00, "Dishes"));
-        MENU_ITEMS.add(new MenuItem(2, "Requiem Pasta", 210.00, "Dishes"));
-        MENU_ITEMS.add(new MenuItem(3, "Golden Caprese", 180.00, "Dishes"));
-        MENU_ITEMS.add(new MenuItem(4, "Panna Cotta Giorno", 120.00, "Desserts"));
-        MENU_ITEMS.add(new MenuItem(5, "Amaretto Dream", 115.00, "Desserts"));
-        MENU_ITEMS.add(new MenuItem(6, "Passione Gelato", 130.00, "Desserts"));
-        MENU_ITEMS.add(new MenuItem(7, "Lavender Latte", 90.00, "Drinks"));
-        MENU_ITEMS.add(new MenuItem(8, "Rose Quartz Fizz", 110.00, "Drinks"));
-        MENU_ITEMS.add(new MenuItem(9, "Grape Stand Spritz", 105.00, "Drinks"));
-    }
-
-    public static void main(String[] args) {
-        runConsole();
-        System.out.println("Arrivederci!");
-    }
-
-    private static void runConsole() {
-        boolean running = true;
-        while (running) {
-            printMainMenu();
-            String choice = SCANNER.nextLine().trim();
-            switch (choice) {
-                case "1":
-                    browseMenu();
-                    break;
-                case "2":
-                    displayReceipt();
-                    break;
-                case "3":
-                    confirmPayment();
-                    break;
-                case "4":
-                    clearOrder();
-                    System.out.println("Order cleared.\n");
-                    break;
-                case "0":
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.\n");
-            }
-        }
-    }
-
-    private static void printMainMenu() {
+public class Main{
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        Category cat = new Category(scan);
         System.out.println("=== Giorno's Deli & Dreams (Console) ===");
         System.out.println("1. Browse menu");
         System.out.println("2. View receipt");
@@ -73,130 +11,80 @@ public class Main {
         System.out.println("4. Clear order");
         System.out.println("0. Exit");
         System.out.print("Choose an option: ");
+        String a = scan.nextLine();
+        
+        if (a.equals("1")){
+            cat.display();
+        }
     }
+    
+    private int id;
+    private String name;
+    private double price;
+    private String category;
+    
+    public void setName(String name){
+        this.name = name;
+    }
+    
+    public void setPrice(double price){
+        this.price = price;
+    }
+    
+}
 
-    private static void browseMenu() {
+class Category{
+    private Scanner scan;
+    
+    public Category(Scanner scan){
+        this.scan = scan;
+    }
+    public void display(){
+        
         System.out.println("\n--- Categories ---");
         System.out.println("1. Dishes");
-        System.out.println("2. Desserts");
+        System.out.println("2. Dessert");
         System.out.println("3. Drinks");
-        System.out.print("Select a category (or press Enter to return): ");
+        System.out.print("Select a category :) : ");
+        String c = scan.nextLine();
 
-        String selection = SCANNER.nextLine().trim();
-        String category;
-        switch (selection) {
+        switch(c){
             case "1":
-                category = "Dishes";
+                Dishes.dishdisplay(scan);
                 break;
-            case "2":
-                category = "Desserts";
+            default :
+                System.out.println("nigga");
                 break;
-            case "3":
-                category = "Drinks";
-                break;
-            default:
-                System.out.println("Returning to main menu.\n");
-                return;
         }
-
-        List<MenuItem> filtered = MENU_ITEMS.stream()
-                .filter(item -> item.category.equalsIgnoreCase(category))
-                .toList();
-
-        if (filtered.isEmpty()) {
-            System.out.println("No items available for " + category + ".\n");
-            return;
-        }
-
-        System.out.printf("%n--- %s --- %n", category);
-        for (MenuItem item : filtered) {
-            int qty = ORDER.getOrDefault(item, 0);
-            System.out.printf("%d) %s - P %.2f (Qty: %d)%n", item.id, item.name, item.price, qty);
-        }
-
-        System.out.print("Enter an item number to update quantity (or press Enter to return): ");
-        String itemChoice = SCANNER.nextLine().trim();
-        if (itemChoice.isEmpty()) {
-            System.out.println();
-            return;
-        }
-
-        MenuItem selected = findItemById(itemChoice);
-        if (selected == null || !selected.category.equalsIgnoreCase(category)) {
-            System.out.println("Invalid selection.\n");
-            return;
-        }
-
-        System.out.print("Enter new quantity (0-99): ");
-        String quantityText = SCANNER.nextLine().trim();
-        try {
-            int quantity = Integer.parseInt(quantityText);
-            if (quantity < 0 || quantity > 99) {
-                throw new NumberFormatException();
-            }
-            setQuantity(selected, quantity);
-            System.out.println("Quantity updated.\n");
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid quantity entered.\n");
-        }
-    }
-
-    private static MenuItem findItemById(String idText) {
-        try {
-            int id = Integer.parseInt(idText);
-            return MENU_ITEMS.stream()
-                    .filter(item -> item.id == id)
-                    .findFirst()
-                    .orElse(null);
-        } catch (NumberFormatException ex) {
-            return null;
-        }
-    }
-
-    private static void setQuantity(MenuItem item, int quantity) {
-        if (quantity <= 0) {
-            ORDER.remove(item);
-        } else {
-            ORDER.put(item, quantity);
-        }
-    }
-
-    private static void displayReceipt() {
-        System.out.println("\n--- Receipt ---");
-        if (ORDER.isEmpty()) {
-            System.out.println("Your order is empty.\n");
-            return;
-        }
-
-        double total = 0.0;
-        for (Map.Entry<MenuItem, Integer> entry : ORDER.entrySet()) {
-            MenuItem item = entry.getKey();
-            int quantity = entry.getValue();
-            double subtotal = quantity * item.price;
-            total += subtotal;
-            System.out.printf("%s x%d -> P %.2f%n", item.name, quantity, subtotal);
-        }
-        System.out.printf("Grand Total: P %.2f%n%n", total);
-    }
-
-    private static void confirmPayment() {
-        if (ORDER.isEmpty()) {
-            System.out.println("\nYou must add at least one item before confirming.\n");
-            return;
-        }
-
-        displayReceipt();
-        System.out.print("Proceed with payment? (y/n): ");
-        String choice = SCANNER.nextLine().trim().toLowerCase();
-        if (choice.equals("y") || choice.equals("yes")) {
-            ORDER.clear();
-            System.out.println("Payment confirmed! Thank you.\n");
-        } else {
-            System.out.println("Payment cancelled.\n");
-        }
-    }
-
-    private static void clearOrder() {
-        ORDER.clear();
     }
 }
+
+
+
+class Dishes{
+    public static void dishdisplay(Scanner scan){
+        System.out.println("\n---Dishes---");
+        System.out.println("1, Trattoria Risotto, 240.00, Dishes");
+        System.out.println("2, Requiem Pasta, 210.00, Dishes");
+        System.out.println("3, Golden Caprese, 180.00, Dishes");
+        System.out.print("Enter the amount you want: ");
+        String b = scan.nextLine();
+        
+        switch (b){
+            case "1":
+                System.out.println("You added Trattoria Risotto to your order!");
+                break;
+            default:
+                System.out.println("isa kang nigga");
+                break;
+        }
+        // System.out.println(4, "Panna Cotta Giorno", 120.00, "Desserts");
+        // System.out.println(5, "Amaretto Dream", 115.00, "Desserts");
+        // System.out.println(6, "Passione Gelato", 130.00, "Desserts");
+        // System.out.println(7, "Lavender Latte", 90.00, "Drinks");
+        // System.out.println(8, "Rose Quartz Fizz", 110.00, "Drinks");
+        // System.out.println(9, "Grape Stand Spritz", 105.00, "Drinks");
+    }
+}
+
+
