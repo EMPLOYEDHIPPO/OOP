@@ -1,28 +1,42 @@
 import java.util.*;
+import java.util.HashMap;
 
 public class Main{
+    public static HashMap<String, Double> hp = new HashMap<>();
+    public static HashMap<String, Integer> order = new HashMap<>();
+    
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
         Category cat = new Category(scan);
         
+        hp.put("Trattoria Risotto,", 240.00);
+        hp.put("Requiem Pasta,", 210.00);
+        hp.put("Golden Caprese,", 180.00);
+        hp.put("Panna Cotta Giorno,", 120.00);
+        hp.put("Amaretto Drea,", 115.00);
+        hp.put("Passione Gelato,", 130.00);
+        hp.put("Lavender Latte,", 90.00);
+        hp.put("Rose Quartz Fizz,", 110.00);
+        hp.put("Grape Stand Spritz,", 105.00);
+        
         String a = "null";
         
         while(!a.equals("0")){
-        System.out.println("=== Giorno's Deli & Dreams (Console) ===");  //printing of menu
+        System.out.println("\n=== Giorno's Deli & Dreams (Console) ===");  //printing of menu
         System.out.println("1. Browse menu");
         System.out.println("2. View receipt");
         System.out.println("3. Confirm payment");
         System.out.println("4. Clear order");
         System.out.println("0. Exit");
         System.out.print("Choose an option: ");
-
+        
             switch(scan.nextLine()){
                 case "1":
                     cat.display();
                     break;
             
                 case "2":
-                    System.out.println("WIP");
+                    Receipt.viewReceipt();
                     break;
                     
                 case "3":
@@ -34,7 +48,7 @@ public class Main{
                     break;
                
             }
-        }        
+        }
     }
     
     private int id;
@@ -73,6 +87,9 @@ class Category{ //browse menu
             case "2":
                 Dessert.dessertDisplay(scan);
                 break;
+            case "3":
+                Drinks.drinksDisplay(scan);
+                break;
             default :
                 System.out.println("Invalid Choice");
                 break;
@@ -85,85 +102,114 @@ class Category{ //browse menu
 class Dishes{ //dishes choices
     public static void dishDisplay(Scanner scan){
         System.out.println("\n---Dishes---");
-        System.out.println("1, Trattoria Risotto, 240.00, Dishes");
-        System.out.println("2, Requiem Pasta, 210.00, Dishes");
-        System.out.println("3, Golden Caprese, 180.00, Dishes");
+        System.out.println("1. Trattoria Risotto, 240.00, Dishes");
+        System.out.println("2. Requiem Pasta, 210.00, Dishes");
+        System.out.println("3. Golden Caprese, 180.00, Dishes");
         System.out.print("Pick your choice: ");
-
-        switch (scan.nextLine()){ 
+        String choice = scan.nextLine();
+        System.out.print("Enter the amount you want: ");
+        int amount = scan.nextInt();
+        
+        String itemName = "";
+        
+        switch (choice){
             case "1":
-                System.out.println("You added Trattoria Risotto to your order!");
+                itemName = "Trattoria Risotto";
                 break;
             case "2":
-                System.out.println("You added Requiem Pasta to your order!");
+                itemName = "Requiem Pasta";
                 break;
             case "3":
-                System.out.println("You added Golden Caprese to your order!");
+                itemName = "Golden Caprese";
                 break;
             default:
                 System.out.println("Invalid choice.");
                 break;
         }
         
-        System.out.print("Enter the amount you want: ");
-        String amount = scan.nextLine();
-        // System.out.println(7, "Lavender Latte", 90.00, "Drinks");
-        // System.out.println(8, "Rose Quartz Fizz", 110.00, "Drinks");
-        // System.out.println(9, "Grape Stand Spritz", 105.00, "Drinks");
+        Main.order.put(itemName, Main.order.getOrDefault(itemName, 0) + amount);
+        System.out.println("You added " + amount + " " + itemName + " to your order!");
     }
 }
 
 class Dessert{ //dessert choices
     public static void dessertDisplay(Scanner scan){
-        System.out.println("\n---Dessert---");
-        System.out.println("4, Panna Cotta Giorno, 120.00, Desserts");
-        System.out.println("5, Amaretto Drea, 115.00, Desserts");
-        System.out.println("6, Passione Gelato, 130.00, Desserts");
+        System.out.println("\n---Desserts---");
+        System.out.println("1. Panna Cotta Giorno, 120.00, Desserts");
+        System.out.println("2. Amaretto Drea, 115.00, Desserts");
+        System.out.println("3. Passione Gelato, 130.00, Desserts");
         System.out.print("Pick you choice: ");
+        String choice = scan.nextLine();
+        System.out.print("Enter the amount you want: ");
+        String amount = scan.nextLine();
         
-        switch (scan.nextLine()){
+        switch (choice){
             case "1":
-                System.out.println("You added Panna Cotta Giorno to your order!");
+                System.out.println("You added " + amount +  "  Panna Cotta Giorno to your order!");
                 break;
             case "2":
-                System.out.println("You added Amaretto Dream to your order!");
+                System.out.println("You added " + amount +  "  Amaretto Dream to your order!");
                 break;
             case "3":
-                System.out.println("You added Passione Gelato to your order!");
+                System.out.println("You added " + amount +  "  Passione Gelato to your order!");
                 break;
             default:
                 System.out.println("Invalid choice.");
                 break;
         }
-        System.out.print("Enter the amount you want: ");
-        String amount = scan.nextLine();
-
     }
-    
+}    
+
 class Drinks{
     public static void drinksDisplay(Scanner scan){
-        System.out.println("\n---Dessert---");
-        System.out.println("7, Placeholder Drink 1, 1000, Drinks");
-        System.out.println("8, Placeholder Drink 2, 1001, Drinks");
-        System.out.println("9, Placeholder Drink 3, 1002, Drinks");
-        System.out.println("Pick your choice: ");
+        System.out.println("\n---Drinks---");
+        System.out.println("1. Lavender Latte, 90.00, Drinks");
+        System.out.println("2. Rose Quartz Fizz, 110.00, Drinks");
+        System.out.println("3. Grape Stand Spritz, 105.00, Drinks");
+        System.out.print("Pick your choice: ");
+        String choice = scan.nextLine();
+        System.out.println("Enter the ammount you want: ");
+        int amount = scan.nextInt();
         
-        switch(scan.nextLine()){
+       
+        
+        switch(choice){
             case "1":
-                System.out.println("You added Placeholder Drink 1 to your order!");
+                System.out.println("You added " + amount +  " Lavender Latte to your order!");
                 break;
             
             case "2":
-                System.out.println("You added Placeholder Drink 2 to your order!");
+                System.out.println("You added " + amount +  "  Rose Quartz Fizz to your order!");
                 break;
                 
             case "3":
-                System.out.println("You added Placeholder Drink 3 to your oder!");
+                System.out.println("You added " + amount +  "  Grape Stand Spritz to your oder!");
+                break;
+            default:
+                System.out.println("Invalid Choice");
                 break;
         }
-        
-        System.out.println("Enter the ammount you want: ");
-        String amount = scan.nextLine();
     }
 }
+
+class Receipt{
+    public static void viewReceipt(){
+        if (Main.hp.isEmpty()){
+            System.out.println("Empty");
+            return;
+        }
+        
+        double total = 0;
+        
+        for (String item : Main.order.keySet()) {
+            int men = Main.order.get(item);
+            double qty = Main.hp.get(item);
+            double subtotal = qty * men;
+            
+            System.out.println("subtotal");
+        }
+    }
 }
+
+
+
