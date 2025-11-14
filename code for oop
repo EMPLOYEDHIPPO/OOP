@@ -90,9 +90,9 @@ class Dishes{
         
         System.out.print("Enter the amount you want: ");
         String amount = scan.nextLine();
-        // System.out.println(7, "Lavender Latte", 90.00, "Drinks");
-        // System.out.println(8, "Rose Quartz Fizz", 110.00, "Drinks");
-        // System.out.println(9, "Grape Stand Spritz", 105.00, "Drinks");
+        // System.out.println("7, Lavender Latte, 90.00, Drinks");
+        // System.out.println("8, Rose Quartz Fizz, 110.00, Drinks");
+        // System.out.println("9, Grape Stand Spritz, 105.00, Drinks");
     }
 }
 
