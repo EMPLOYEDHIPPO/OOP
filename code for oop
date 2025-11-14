@@ -52,8 +52,11 @@ class Category{
             case "1":
                 Dishes.dishdisplay(scan);
                 break;
+            case "2":
+                Dessert.DessertDisplay(scan);
+                break;
             default :
-                System.out.println("nigga");
+                System.out.println("Invalid Choice");
                 break;
         }
     }
@@ -67,24 +70,58 @@ class Dishes{
         System.out.println("1, Trattoria Risotto, 240.00, Dishes");
         System.out.println("2, Requiem Pasta, 210.00, Dishes");
         System.out.println("3, Golden Caprese, 180.00, Dishes");
-        System.out.print("Enter the amount you want: ");
+        System.out.print("Pick your choice: ");
         String b = scan.nextLine();
-        
+
         switch (b){
             case "1":
                 System.out.println("You added Trattoria Risotto to your order!");
                 break;
+            case "2":
+                System.out.println("You added Requiem Pasta to your order!");
+                break;
+            case "3":
+                System.out.println("You added Golden Caprese to your order!");
+                break;
             default:
-                System.out.println("isa kang nigga");
+                System.out.println("Invalid choice.");
                 break;
         }
-        // System.out.println(4, "Panna Cotta Giorno", 120.00, "Desserts");
-        // System.out.println(5, "Amaretto Dream", 115.00, "Desserts");
-        // System.out.println(6, "Passione Gelato", 130.00, "Desserts");
+        
+        System.out.print("Enter the amount you want: ");
+        String amount = scan.nextLine();
         // System.out.println(7, "Lavender Latte", 90.00, "Drinks");
         // System.out.println(8, "Rose Quartz Fizz", 110.00, "Drinks");
         // System.out.println(9, "Grape Stand Spritz", 105.00, "Drinks");
     }
 }
 
+class Dessert{
+    public static void DessertDisplay(Scanner scan){
+        System.out.println("\n---Dessert---");
+        System.out.println("4, Panna Cotta Giorno, 120.00, Desserts");
+        System.out.println("5, Amaretto Drea, 115.00, Desserts");
+        System.out.println("6, Passione Gelato, 130.00, Desserts");
+        System.out.print("Pick you choice: ");
+        String c = scan.nextLine();
+        
+        switch (c){
+            case "1":
+                System.out.println("You added Panna Cotta Giorno to your order!");
+                break;
+            case "2":
+                System.out.println("You added Amaretto Dream to your order!");
+                break;
+            case "3":
+                System.out.println("You added Passione Gelato to your order!");
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                break;
+        }
+        System.out.print("Enter the amount you want: ");
+        String amount = scan.nextLine();
+
+    }
+}
 
