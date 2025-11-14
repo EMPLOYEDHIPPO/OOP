@@ -2,31 +2,47 @@ import java.util.*;
 
 public class Main{
     public static void main(String[] args){
-        while (true){
-            Scanner scan = new Scanner(System.in);
-            Category cat = new Category(scan);
-            System.out.println("=== Giorno's Deli & Dreams (Console) ===");
-            System.out.println("1. Browse menu");
-            System.out.println("2. View receipt");
-            System.out.println("3. Confirm payment");
-            System.out.println("4. Clear order");
-            System.out.println("0. Exit");
-            System.out.print("Choose an option: ");
-            String a = scan.nextLine();
-            
-            if (a.equals("1")){
-                cat.display();
-            }
-        }
-    }
+        Scanner scan = new Scanner(System.in);
+        Category cat = new Category(scan);
         
+        String a = "null";
+        
+        while(!a.equals("0")){
+        System.out.println("=== Giorno's Deli & Dreams (Console) ===");  //printing of menu
+        System.out.println("1. Browse menu");
+        System.out.println("2. View receipt");
+        System.out.println("3. Confirm payment");
+        System.out.println("4. Clear order");
+        System.out.println("0. Exit");
+        System.out.print("Choose an option: ");
+
+            switch(scan.nextLine()){
+                case "1":
+                    cat.display();
+                    break;
+            
+                case "2":
+                    System.out.println("WIP");
+                    break;
+                    
+                case "3":
+                    System.out.println("WIP");
+                    break;
+                    
+                case "4":
+                    System.out.println("WIP");
+                    break;
+               
+            }
+        }        
+    }
     
     private int id;
     private String name;
     private double price;
     private String category;
     
-    public void setName(String name){
+    public void setName(String name){ //for storage for price logic
         this.name = name;
     }
     
@@ -36,7 +52,7 @@ public class Main{
     
 }
 
-class Category{
+class Category{ //browse menu
     private Scanner scan;
     
     public Category(Scanner scan){
@@ -49,14 +65,13 @@ class Category{
         System.out.println("2. Dessert");
         System.out.println("3. Drinks");
         System.out.print("Select a category :) : ");
-        String c = scan.nextLine();
-
-        switch(c){
+        
+        switch(scan.nextLine()){ //menu choices
             case "1":
-                Dishes.dishdisplay(scan);
+                Dishes.dishDisplay(scan);
                 break;
             case "2":
-                Dessert.DessertDisplay(scan);
+                Dessert.dessertDisplay(scan);
                 break;
             default :
                 System.out.println("Invalid Choice");
@@ -67,18 +82,15 @@ class Category{
 
 
 
-class Dishes{
-    public static void dishdisplay(Scanner scan){
+class Dishes{ //dishes choices
+    public static void dishDisplay(Scanner scan){
         System.out.println("\n---Dishes---");
-        System.out.println("1. Trattoria Risotto, 240.00, Dishes");
-        System.out.println("2. Requiem Pasta, 210.00, Dishes");
-        System.out.println("3. Golden Caprese, 180.00, Dishes");
+        System.out.println("1, Trattoria Risotto, 240.00, Dishes");
+        System.out.println("2, Requiem Pasta, 210.00, Dishes");
+        System.out.println("3, Golden Caprese, 180.00, Dishes");
         System.out.print("Pick your choice: ");
-        String b = scan.nextLine();
-        System.out.print("Enter the amount you want: ");
-        String amount = scan.nextLine();
 
-        switch (b){
+        switch (scan.nextLine()){ 
             case "1":
                 System.out.println("You added Trattoria Risotto to your order!");
                 break;
@@ -93,22 +105,23 @@ class Dishes{
                 break;
         }
         
-        // System.out.println("7. Lavender Latte, 90.00, Drinks");
-        // System.out.println("8. Rose Quartz Fizz, 110.00, Drinks");
-        // System.out.println("9. Grape Stand Spritz, 105.00, Drinks");
+        System.out.print("Enter the amount you want: ");
+        String amount = scan.nextLine();
+        // System.out.println(7, "Lavender Latte", 90.00, "Drinks");
+        // System.out.println(8, "Rose Quartz Fizz", 110.00, "Drinks");
+        // System.out.println(9, "Grape Stand Spritz", 105.00, "Drinks");
     }
 }
 
-class Dessert{
-    public static void DessertDisplay(Scanner scan){
+class Dessert{ //dessert choices
+    public static void dessertDisplay(Scanner scan){
         System.out.println("\n---Dessert---");
-        System.out.println("4. Panna Cotta Giorno, 120.00, Desserts");
-        System.out.println("5. Amaretto Drea, 115.00, Desserts");
-        System.out.println("6. Passione Gelato, 130.00, Desserts");
+        System.out.println("4, Panna Cotta Giorno, 120.00, Desserts");
+        System.out.println("5, Amaretto Drea, 115.00, Desserts");
+        System.out.println("6, Passione Gelato, 130.00, Desserts");
         System.out.print("Pick you choice: ");
-        String c = scan.nextLine();
         
-        switch (c){
+        switch (scan.nextLine()){
             case "1":
                 System.out.println("You added Panna Cotta Giorno to your order!");
                 break;
@@ -126,14 +139,31 @@ class Dessert{
         String amount = scan.nextLine();
 
     }
+    
+class Drinks{
+    public static void drinksDisplay(Scanner scan){
+        System.out.println("\n---Dessert---");
+        System.out.println("7, Placeholder Drink 1, 1000, Drinks");
+        System.out.println("8, Placeholder Drink 2, 1001, Drinks");
+        System.out.println("9, Placeholder Drink 3, 1002, Drinks");
+        System.out.println("Pick your choice: ");
+        
+        switch(scan.nextLine()){
+            case "1":
+                System.out.println("You added Placeholder Drink 1 to your order!");
+                break;
+            
+            case "2":
+                System.out.println("You added Placeholder Drink 2 to your order!");
+                break;
+                
+            case "3":
+                System.out.println("You added Placeholder Drink 3 to your oder!");
+                break;
+        }
+        
+        System.out.println("Enter the ammount you want: ");
+        String amount = scan.nextLine();
+    }
 }
-
-// class ConfirmPayment{
-//     public void confirmpayment(){
-//         if (orderList.isEmpty()) {
-//             System.out.println("\nYou have no items to pay for.");
-//             return;
-//         }
-//     }
-// }
-
+}
