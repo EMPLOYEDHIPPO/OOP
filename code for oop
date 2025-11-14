@@ -2,21 +2,24 @@ import java.util.*;
 
 public class Main{
     public static void main(String[] args){
-        Scanner scan = new Scanner(System.in);
-        Category cat = new Category(scan);
-        System.out.println("=== Giorno's Deli & Dreams (Console) ===");
-        System.out.println("1. Browse menu");
-        System.out.println("2. View receipt");
-        System.out.println("3. Confirm payment");
-        System.out.println("4. Clear order");
-        System.out.println("0. Exit");
-        System.out.print("Choose an option: ");
-        String a = scan.nextLine();
-        
-        if (a.equals("1")){
-            cat.display();
+        while (true){
+            Scanner scan = new Scanner(System.in);
+            Category cat = new Category(scan);
+            System.out.println("=== Giorno's Deli & Dreams (Console) ===");
+            System.out.println("1. Browse menu");
+            System.out.println("2. View receipt");
+            System.out.println("3. Confirm payment");
+            System.out.println("4. Clear order");
+            System.out.println("0. Exit");
+            System.out.print("Choose an option: ");
+            String a = scan.nextLine();
+            
+            if (a.equals("1")){
+                cat.display();
+            }
         }
     }
+        
     
     private int id;
     private String name;
@@ -67,11 +70,13 @@ class Category{
 class Dishes{
     public static void dishdisplay(Scanner scan){
         System.out.println("\n---Dishes---");
-        System.out.println("1, Trattoria Risotto, 240.00, Dishes");
-        System.out.println("2, Requiem Pasta, 210.00, Dishes");
-        System.out.println("3, Golden Caprese, 180.00, Dishes");
+        System.out.println("1. Trattoria Risotto, 240.00, Dishes");
+        System.out.println("2. Requiem Pasta, 210.00, Dishes");
+        System.out.println("3. Golden Caprese, 180.00, Dishes");
         System.out.print("Pick your choice: ");
         String b = scan.nextLine();
+        System.out.print("Enter the amount you want: ");
+        String amount = scan.nextLine();
 
         switch (b){
             case "1":
@@ -88,20 +93,18 @@ class Dishes{
                 break;
         }
         
-        System.out.print("Enter the amount you want: ");
-        String amount = scan.nextLine();
-        // System.out.println("7, Lavender Latte, 90.00, Drinks");
-        // System.out.println("8, Rose Quartz Fizz, 110.00, Drinks");
-        // System.out.println("9, Grape Stand Spritz, 105.00, Drinks");
+        // System.out.println("7. Lavender Latte, 90.00, Drinks");
+        // System.out.println("8. Rose Quartz Fizz, 110.00, Drinks");
+        // System.out.println("9. Grape Stand Spritz, 105.00, Drinks");
     }
 }
 
 class Dessert{
     public static void DessertDisplay(Scanner scan){
         System.out.println("\n---Dessert---");
-        System.out.println("4, Panna Cotta Giorno, 120.00, Desserts");
-        System.out.println("5, Amaretto Drea, 115.00, Desserts");
-        System.out.println("6, Passione Gelato, 130.00, Desserts");
+        System.out.println("4. Panna Cotta Giorno, 120.00, Desserts");
+        System.out.println("5. Amaretto Drea, 115.00, Desserts");
+        System.out.println("6. Passione Gelato, 130.00, Desserts");
         System.out.print("Pick you choice: ");
         String c = scan.nextLine();
         
@@ -124,4 +127,13 @@ class Dessert{
 
     }
 }
+
+// class ConfirmPayment{
+//     public void confirmpayment(){
+//         if (orderList.isEmpty()) {
+//             System.out.println("\nYou have no items to pay for.");
+//             return;
+//         }
+//     }
+// }
 
