@@ -2,23 +2,10 @@ import java.util.*;
 import java.util.HashMap;
 
 public class Main{
-    public static HashMap<String, Double> hp = new HashMap<>();
-    public static HashMap<String, Integer> order = new HashMap<>();
-    
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
         Category cat = new Category(scan);
-        
-        hp.put("Trattoria Risotto,", 240.00);
-        hp.put("Requiem Pasta,", 210.00);
-        hp.put("Golden Caprese,", 180.00);
-        hp.put("Panna Cotta Giorno,", 120.00);
-        hp.put("Amaretto Drea,", 115.00);
-        hp.put("Passione Gelato,", 130.00);
-        hp.put("Lavender Latte,", 90.00);
-        hp.put("Rose Quartz Fizz,", 110.00);
-        hp.put("Grape Stand Spritz,", 105.00);
-        
+ 
         String a = "null";
         
         while(!a.equals("0")){
@@ -27,34 +14,38 @@ public class Main{
         System.out.println("2. View receipt");
         System.out.println("3. Confirm payment");
         System.out.println("4. Clear order");
-        System.out.println("0. Exit");
+        System.out.println("5. Exit");
         System.out.print("Choose an option: ");
+        String option = scan.nextLine();
         
-            switch(scan.nextLine()){
+            switch(option){
                 case "1":
                     cat.display();
                     break;
             
                 case "2":
-                    Receipt.viewReceipt();
+                    Receipt.viewReceipt(scan);
                     break;
                     
                 case "3":
-                    System.out.println("WIP");
+                    ConfirmPayment.confirm(scan);
                     break;
                     
                 case "4":
-                    System.out.println("WIP");
+                    ClearReceipt.clearingReceipt();
                     break;
-               
             }
+        if (option.equals("5")){
+            System.out.println("Exiting....");
+            break;
+        }    
+            scan.nextLine();
         }
     }
     
     private int id;
     private String name;
     private double price;
-    private String category;
     
     public void setName(String name){ //for storage for price logic
         this.name = name;
@@ -64,6 +55,13 @@ public class Main{
         this.price = price;
     }
     
+    public String getName(String name){
+        return name;
+    }
+    
+    public double getPrice(double price){
+        return price;
+    }
 }
 
 class Category{ //browse menu
@@ -111,23 +109,26 @@ class Dishes{ //dishes choices
         int amount = scan.nextInt();
         
         String itemName = "";
+        double price = 0;
         
         switch (choice){
             case "1":
-                itemName = "Trattoria Risotto";
+                itemName = "Trattoria Risotto, Dishes";
+                price = 240.00;
                 break;
             case "2":
-                itemName = "Requiem Pasta";
+                itemName = "Requiem Pasta, Dishes";
+                price = 210.00;
                 break;
             case "3":
-                itemName = "Golden Caprese";
+                itemName = "Golden Caprese, Dishes";
+                price = 180.00;
                 break;
             default:
                 System.out.println("Invalid choice.");
                 break;
         }
-        
-        Main.order.put(itemName, Main.order.getOrDefault(itemName, 0) + amount);
+        Receipt.addToReceipt(itemName, price, amount);
         System.out.println("You added " + amount + " " + itemName + " to your order!");
     }
 }
@@ -141,22 +142,31 @@ class Dessert{ //dessert choices
         System.out.print("Pick you choice: ");
         String choice = scan.nextLine();
         System.out.print("Enter the amount you want: ");
-        String amount = scan.nextLine();
+        int amount = scan.nextInt();
+        
+        String itemName = "";
+        double price = 0;
         
         switch (choice){
             case "1":
-                System.out.println("You added " + amount +  "  Panna Cotta Giorno to your order!");
+                itemName = "Panna Cotta Giorno, Desserts";
+                price = 120.00;
                 break;
             case "2":
-                System.out.println("You added " + amount +  "  Amaretto Dream to your order!");
+                itemName = "Amaretto Drea, Desserts";
+                price = 115.00;
                 break;
             case "3":
-                System.out.println("You added " + amount +  "  Passione Gelato to your order!");
+                itemName = "Passione Gelato, Desserts";
+                price = 130.00;
                 break;
             default:
                 System.out.println("Invalid choice.");
                 break;
         }
+        
+        Receipt.addToReceipt(itemName, price, amount);
+        System.out.println("You added " + amount + " " + itemName + " to your order!");
     }
 }    
 
@@ -168,48 +178,101 @@ class Drinks{
         System.out.println("3. Grape Stand Spritz, 105.00, Drinks");
         System.out.print("Pick your choice: ");
         String choice = scan.nextLine();
-        System.out.println("Enter the ammount you want: ");
+        System.out.print("Enter the ammount you want: ");
         int amount = scan.nextInt();
         
-       
-        
+        String itemName = "";
+        double price = 0;
+          
         switch(choice){
             case "1":
-                System.out.println("You added " + amount +  " Lavender Latte to your order!");
+                itemName = "Lavender Latte, Drinks";
+                price = 90.00;
                 break;
             
             case "2":
-                System.out.println("You added " + amount +  "  Rose Quartz Fizz to your order!");
+                itemName = "Rose Quartz Fizz, Drinks";
+                price = 110.00;
                 break;
                 
             case "3":
-                System.out.println("You added " + amount +  "  Grape Stand Spritz to your oder!");
+                itemName = "Grape Stand Spritz, Drinks";
+                price = 105.00;
                 break;
             default:
                 System.out.println("Invalid Choice");
                 break;
         }
+        
+        Receipt.addToReceipt(itemName, price, amount);
+        System.out.println("You added " + amount + " " + itemName + " to your order!");
     }
 }
 
 class Receipt{
-    public static void viewReceipt(){
-        if (Main.hp.isEmpty()){
-            System.out.println("Empty");
+    private static String receiptText = "";
+    private static double Total = 0;
+    public static boolean isEmpty() {
+        return receiptText.equals("");
+    }
+    
+    public static void addToReceipt(String itemName, double price, int amount){
+        double subTotal = price * amount;
+        receiptText += itemName + " x" + amount + " - P" + subTotal + "\n";
+        Total += subTotal;
+        
+    }
+    
+    public static void viewReceipt(Scanner scan){
+        if (receiptText.equals("")){
+            System.out.println("Your receipt is empty..");
+            return;
+            
+        }
+        
+        System.out.println("\n===Receipt===");
+        System.out.println(receiptText);
+        System.out.println("-------------");
+        System.out.println("Total: P" + Total);
+        
+    
+        System.out.print("Confirm Payment(y/n): ");
+        String payment = scan.next();
+        
+        
+        if (payment.equalsIgnoreCase("y")){
+            System.out.println("Thank you for confirming the food will arrive to you soon!");
+            clearReceipt();
             return;
         }
-        
-        double total = 0;
-        
-        for (String item : Main.order.keySet()) {
-            int men = Main.order.get(item);
-            double qty = Main.hp.get(item);
-            double subtotal = qty * men;
-            
-            System.out.println("subtotal");
+        else if (payment.equalsIgnoreCase("n")){
+            System.out.println("Payment cancelled. Returning to receipt menu...");
+            return;
         }
+    }
+    
+    public static void clearReceipt(){
+        receiptText = "";
+        Total = 0;
+        System.out.println("Receipt cleared.");
     }
 }
 
+class ConfirmPayment{
+    
+    public static void confirm(Scanner scan){
+        if (Receipt.isEmpty()) {
+            System.out.println("Your receipt is empty. Nothing to confirm.");
+            return;
+        }
+        Receipt.viewReceipt(scan);
+    }
+}
+
+class ClearReceipt{
+    public static void clearingReceipt(){
+        Receipt.clearReceipt();
+    }
+}
 
 
