@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.HashMap;
 
 public class Main{
     public static void main(String[] args){
@@ -9,7 +8,7 @@ public class Main{
         String a = "null";
         
         while(!a.equals("0")){
-        System.out.println("\n=== Giorno's Deli & Dreams (Console) ===");  //printing of menu
+        System.out.println("\n=== Giorno's Deli & Dreams (Console) ===");
         System.out.println("1. Browse menu");
         System.out.println("2. View receipt");
         System.out.println("3. Confirm payment");
@@ -43,11 +42,10 @@ public class Main{
         }
     }
     
-    private int id;
     private String name;
     private double price;
     
-    public void setName(String name){ //for storage for price logic
+    public void setName(String name){
         this.name = name;
     }
     
@@ -64,7 +62,7 @@ public class Main{
     }
 }
 
-class Category{ //browse menu
+class Category{
     private Scanner scan;
     
     public Category(Scanner scan){
@@ -78,7 +76,7 @@ class Category{ //browse menu
         System.out.println("3. Drinks");
         System.out.print("Select a category :) : ");
         
-        switch(scan.nextLine()){ //menu choices
+        switch(scan.nextLine()){
             case "1":
                 Dishes.dishDisplay(scan);
                 break;
@@ -97,7 +95,7 @@ class Category{ //browse menu
 
 
 
-class Dishes{ //dishes choices
+class Dishes{
     public static void dishDisplay(Scanner scan){
         System.out.println("\n---Dishes---");
         System.out.println("1. Trattoria Risotto, 240.00, Dishes");
@@ -133,7 +131,7 @@ class Dishes{ //dishes choices
     }
 }
 
-class Dessert{ //dessert choices
+class Dessert{
     public static void dessertDisplay(Scanner scan){
         System.out.println("\n---Desserts---");
         System.out.println("1. Panna Cotta Giorno, 120.00, Desserts");
