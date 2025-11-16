@@ -5,9 +5,9 @@ public class Main{
         Scanner scan = new Scanner(System.in);
         Category cat = new Category(scan);
  
-        String a = "null";
+        String option = "null";
         
-        while(!a.equals("0")){
+        while(!option.equals("5")){
         System.out.println("\n=== Giorno's Deli & Dreams (Console) ===");
         System.out.println("1. Browse menu");
         System.out.println("2. View receipt");
@@ -15,7 +15,7 @@ public class Main{
         System.out.println("4. Clear order");
         System.out.println("5. Exit");
         System.out.print("Choose an option: ");
-        String option = scan.nextLine();
+        option = scan.nextLine();
         
             switch(option){
                 case "1":
@@ -33,33 +33,13 @@ public class Main{
                 case "4":
                     ClearReceipt.clearingReceipt();
                     break;
-            }
-        if (option.equals("5")){
-            System.out.println("Exiting....");
-            break;
-        }    
-            scan.nextLine();
+                    
+                case "5":
+                    System.out.println("Exiting...");
+                    break;
+            }       
         }
-    }
-    
-    private String name;
-    private double price;
-    
-    public void setName(String name){
-        this.name = name;
-    }
-    
-    public void setPrice(double price){
-        this.price = price;
-    }
-    
-    public String getName(String name){
-        return name;
-    }
-    
-    public double getPrice(double price){
-        return price;
-    }
+    }   
 }
 
 class Category{
@@ -128,6 +108,7 @@ class Dishes{
         }
         Receipt.addToReceipt(itemName, price, amount);
         System.out.println("You added " + amount + " " + itemName + " to your order!");
+        scan.nextLine();
     }
 }
 
@@ -165,6 +146,7 @@ class Dessert{
         
         Receipt.addToReceipt(itemName, price, amount);
         System.out.println("You added " + amount + " " + itemName + " to your order!");
+        scan.nextLine();
     }
 }    
 
@@ -204,6 +186,7 @@ class Drinks{
         
         Receipt.addToReceipt(itemName, price, amount);
         System.out.println("You added " + amount + " " + itemName + " to your order!");
+        scan.nextLine();
     }
 }
 
@@ -263,6 +246,7 @@ class ConfirmPayment{
             System.out.println("Your receipt is empty. Nothing to confirm.");
             return;
         }
+        
         Receipt.viewReceipt(scan);
     }
 }
@@ -272,5 +256,3 @@ class ClearReceipt{
         Receipt.clearReceipt();
     }
 }
-
-
