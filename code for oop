@@ -4,10 +4,8 @@ public class Main{
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
         Category cat = new Category(scan);
- 
-        String a = "null";
         
-        while(!a.equals("0")){
+        while(true){
         System.out.println("\n=== Giorno's Deli & Dreams (Console) ===");
         System.out.println("1. Browse menu");
         System.out.println("2. View receipt");
@@ -15,13 +13,12 @@ public class Main{
         System.out.println("4. Clear order");
         System.out.println("5. Exit");
         System.out.print("Choose an option: ");
-        String option = scan.nextLine();
-        
+        String option = scan.next();
+        scan.nextLine();
             switch(option){
                 case "1":
                     cat.display();
                     break;
-            
                 case "2":
                     Receipt.viewReceipt(scan);
                     break;
@@ -33,11 +30,11 @@ public class Main{
                 case "4":
                     ClearReceipt.clearingReceipt();
                     break;
+                case "5":
+                    System.out.println("exiting..");
+                    break;
+               
             }
-        if (option.equals("5")){
-            System.out.println("Exiting....");
-            break;
-        }    
         }
     }
     
