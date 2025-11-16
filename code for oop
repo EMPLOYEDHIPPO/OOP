@@ -38,7 +38,6 @@ public class Main{
             System.out.println("Exiting....");
             break;
         }    
-            scan.nextLine();
         }
     }
     
@@ -105,6 +104,7 @@ class Dishes{
         String choice = scan.nextLine();
         System.out.print("Enter the amount you want: ");
         int amount = scan.nextInt();
+        scan.nextLine();
         
         String itemName = "";
         double price = 0;
@@ -141,6 +141,7 @@ class Dessert{
         String choice = scan.nextLine();
         System.out.print("Enter the amount you want: ");
         int amount = scan.nextInt();
+        scan.nextLine();
         
         String itemName = "";
         double price = 0;
@@ -178,6 +179,7 @@ class Drinks{
         String choice = scan.nextLine();
         System.out.print("Enter the ammount you want: ");
         int amount = scan.nextInt();
+        scan.nextLine();
         
         String itemName = "";
         double price = 0;
@@ -270,7 +272,6 @@ class ConfirmPayment{
 class ClearReceipt{
     public static void clearingReceipt(){
         Receipt.clearReceipt();
+        return;
     }
 }
-
-
