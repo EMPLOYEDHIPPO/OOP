@@ -43,9 +43,12 @@ public class Main{
                 cat.displayMenu(); //
                 break;
 
-                case "2": Receipt.viewReceipt(scan); break;
-                case "3": ConfirmPayment.confirm(scan); break;
-                case "4": ClearReceipt.clearingReceipt(); break;
+                case "2": 
+                    Receipt.viewReceipt(scan); break;
+                case "3": 
+                    ConfirmPayment.confirm(scan); break;
+                case "4": 
+                    ClearReceipt.clearingReceipt(); break;
             }
 
             if(option.equals("5")){
