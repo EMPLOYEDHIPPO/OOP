@@ -40,7 +40,7 @@ public class Main{
                         continue;
                 }
 
-                cat.displayMenu(); // <-- POLYMORPHISM HAPPENS HERE
+                cat.displayMenu(); //
                 break;
 
                 case "2": Receipt.viewReceipt(scan); break;
