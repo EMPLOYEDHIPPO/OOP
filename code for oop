@@ -3,7 +3,8 @@ import java.util.*;
 public class Main{
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
-        Category cat = new Category(scan);
+        Category c1 = new Dishes(scan);
+        Category c2 = new Drinks(scan);
         
         while(true){
         System.out.println("\n=== Giorno's Deli & Dreams (Console) ===");
@@ -15,64 +16,67 @@ public class Main{
         System.out.print("Choose an option: ");
         String option = scan.next();
         scan.nextLine();
-            switch(option){
-                case "1":
-                    cat.display();
-                    break;
-                case "2":
-                    Receipt.viewReceipt(scan);
-                    break;
-                    
-                case "3":
-                    ConfirmPayment.confirm(scan);
-                    break;
-                    
-                case "4":
-                    ClearReceipt.clearingReceipt();
-                    break;
+
+        switch(option){
+            case "1":
+                System.out.println("\n--- Select Category ---");
+                System.out.println("1. Dishes");
+                System.out.println("2. Dessert");
+                System.out.println("3. Drinks");
+                System.out.print("Select: ");
+                String catChoice = scan.nextLine();
+
+                Category cat = null; 
+
+                switch(catChoice){
+                    case "1": 
+                        cat = new Dishes(scan); break;
+                    case "2": 
+                        cat = new Dessert(scan); break;
+                    case "3": 
+                        cat = new Drinks(scan); break;
+                    default: 
+                        System.out.println("Invalid!"); 
+                        continue;
+                }
+
+                cat.displayMenu(); // <-- POLYMORPHISM HAPPENS HERE
+                break;
+
+                case "2": Receipt.viewReceipt(scan); break;
+                case "3": ConfirmPayment.confirm(scan); break;
+                case "4": ClearReceipt.clearingReceipt(); break;
             }
-        if (option.equals("5")){
-            System.out.println("Exiting..");
-            break;
-        }
+
+            if(option.equals("5")){
+                System.out.println("Exiting...");
+                break;
+            }
         }
     }
 }
 
-class Category{
-    private Scanner scan;
-    
-    public Category(Scanner scan){
+abstract class Category {
+    protected Scanner scan;
+
+    public Category(Scanner scan) {
         this.scan = scan;
     }
-    public void display(){
-        
-        System.out.println("\n--- Categories ---");
-        System.out.println("1. Dishes");
-        System.out.println("2. Dessert");
-        System.out.println("3. Drinks");
-        System.out.print("Select a category :) : ");
-        
-        switch(scan.nextLine()){
-            case "1":
-                Dishes.dishDisplay(scan);
-                break;
-            case "2":
-                Dessert.dessertDisplay(scan);
-                break;
-            case "3":
-                Drinks.drinksDisplay(scan);
-                break;
-            default :
-                System.out.println("Invalid Choice");
-                break;
-        }
-    }
+
+    public abstract void displayMenu();
 }
 
 
-
-class Dishes{
+class Dishes extends Category{
+    public Dishes(Scanner scan){
+        super(scan);
+    }
+    
+    @Override
+    public void displayMenu() {
+        dishDisplay(scan);
+    }
+    
     public static void dishDisplay(Scanner scan){
         System.out.println("\n---Dishes---");
         System.out.println("1. Trattoria Risotto, 240.00, Dishes");
@@ -109,7 +113,16 @@ class Dishes{
     }
 }
 
-class Dessert{
+class Dessert extends Category{
+    public Dessert(Scanner scan){
+        super(scan);
+    }
+    
+    @Override
+    public void displayMenu() {
+        dessertDisplay(scan);
+    }
+    
     public static void dessertDisplay(Scanner scan){
         System.out.println("\n---Desserts---");
         System.out.println("1. Panna Cotta Giorno, 120.00, Desserts");
@@ -147,7 +160,16 @@ class Dessert{
     }
 }    
 
-class Drinks{
+class Drinks extends Category{
+    public Drinks(Scanner scan){
+        super(scan);
+    }
+    
+    @Override
+    public void displayMenu() {
+        drinksDisplay(scan);
+    }
+    
     public static void drinksDisplay(Scanner scan){
         System.out.println("\n---Drinks---");
         System.out.println("1. Lavender Latte, 90.00, Drinks");
