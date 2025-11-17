@@ -31,11 +31,14 @@ public class Main{
 
                 switch(catChoice){
                     case "1": 
-                        cat = new Dishes(scan); break;
+                        cat = new Dishes(scan); 
+                        break;
                     case "2": 
-                        cat = new Dessert(scan); break;
+                        cat = new Dessert(scan); 
+                        break;
                     case "3": 
-                        cat = new Drinks(scan); break;
+                        cat = new Drinks(scan); 
+                        break;
                     default: 
                         System.out.println("Invalid!"); 
                         continue;
@@ -45,11 +48,14 @@ public class Main{
                 break;
 
                 case "2": 
-                    Receipt.viewReceipt(scan); break;
+                    Receipt.viewReceipt(scan); 
+                    break;
                 case "3": 
-                    ConfirmPayment.confirm(scan); break;
+                    ConfirmPayment.confirm(scan); 
+                    break;
                 case "4": 
-                    ClearReceipt.clearingReceipt(); break;
+                    ClearReceipt.clearingReceipt(); 
+                    break;
             }
 
             if(option.equals("5")){
