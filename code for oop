@@ -7,7 +7,7 @@ public class Main{
         Category c2 = new Drinks(scan);
         
         while(true){
-        System.out.println("\n=== Giorno's Deli & Dreams (Console) ===");
+        System.out.println("\n=== Giorno's Dolci & Dreams (Console) ===");
         System.out.println("1. Browse menu");
         System.out.println("2. View receipt");
         System.out.println("3. Confirm payment");
