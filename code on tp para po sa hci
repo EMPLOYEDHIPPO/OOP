@@ -1,37 +1,15 @@
+package restaurant.oop;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.table.DefaultTableModel;
 
-public class Performance extends JFrame {
-
-    private static class MenuItem {
-        private final String name;
-        private final double price;
-        private final String category;
-
-        public MenuItem(String name, double price, String category) {
-            this.name = name;
-            this.price = price;
-            this.category = category;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public String getCategory() {
-            return category;
-        }
-    }
+public class Framing extends JFrame {
 
     private JLabel totalLabel;
     private DefaultTableModel orderTableModel;
@@ -42,14 +20,16 @@ public class Performance extends JFrame {
     private final List<JSpinner> quantitySpinners;
     private final Map<JSpinner, MenuItem> spinnerItemMap;
 
-    public Performance() {
+    public Framing() {
         setTitle("Giorno's Deli & Dreams");
-        setSize(1400, 1000);
+        // 15-inch laptop screens are typically 1366×768 or 1440×900; use 1280×720 to stay safe
+        setSize(1280, 720);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         quantitySpinners = new ArrayList<>();
         spinnerItemMap = new HashMap<>();
+
         orderTableModel = new DefaultTableModel(new Object[]{"Item", "Qty", "Subtotal"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -59,7 +39,7 @@ public class Performance extends JFrame {
 
         MainBackgroundPanel contentPane = new MainBackgroundPanel();
         contentPane.setLayout(new BorderLayout());
-        contentPane.setBorder(new EmptyBorder(15, 15, 15, 15));
+        contentPane.setBorder(new EmptyBorder(10, 10, 10, 10)); // slightly tighter border
         setContentPane(contentPane);
 
         contentPane.add(createHeaderPanel(), BorderLayout.NORTH);
@@ -71,32 +51,32 @@ public class Performance extends JFrame {
     private JComponent createHeaderPanel() {
         JPanel headerWrapper = new JPanel(new BorderLayout());
         headerWrapper.setOpaque(false);
-        headerWrapper.setBorder(new EmptyBorder(0, 20, 20, 20));
+        headerWrapper.setBorder(new EmptyBorder(0, 15, 15, 15)); // reduced
 
-        RoundedPanel headerPanel = new RoundedPanel(50);
+        RoundedPanel headerPanel = new RoundedPanel(40); // smaller corners
         headerPanel.setBackground(new Color(170, 122, 35));
         headerPanel.setLayout(new BorderLayout());
-        headerPanel.setBorder(new EmptyBorder(15, 30, 15, 30));
+        headerPanel.setBorder(new EmptyBorder(10, 20, 10, 20)); // tighter
 
-        JLabel titleLabel = new JLabel("Giorno's deli & dreams");
+        JLabel titleLabel = new JLabel("Giorno's dolci & dreams");
         titleLabel.setForeground(new Color(247, 233, 255));
-        titleLabel.setFont(new Font("Georgia", Font.BOLD, 44));
-        titleLabel.setBorder(new EmptyBorder(5, 0, 0, 0));
+        titleLabel.setFont(new Font("Georgia", Font.BOLD, 32)); // smaller
+        titleLabel.setBorder(new EmptyBorder(3, 0, 0, 0));
 
         JLabel subtitleLabel = new JLabel("Giorno-sama, have a dream");
         subtitleLabel.setForeground(new Color(255, 235, 245));
-        subtitleLabel.setFont(new Font("Serif", Font.ITALIC, 20));
+        subtitleLabel.setFont(new Font("Serif", Font.ITALIC, 16)); // smaller
 
         JPanel textBlock = new JPanel();
         textBlock.setOpaque(false);
         textBlock.setLayout(new BoxLayout(textBlock, BoxLayout.Y_AXIS));
         textBlock.add(titleLabel);
-        textBlock.add(Box.createVerticalStrut(5));
+        textBlock.add(Box.createVerticalStrut(3));
         textBlock.add(subtitleLabel);
 
         headerPanel.add(textBlock, BorderLayout.WEST);
-
         headerWrapper.add(headerPanel, BorderLayout.CENTER);
+
         return headerWrapper;
     }
 
@@ -117,7 +97,7 @@ public class Performance extends JFrame {
         leftColumn.setOpaque(false);
         leftColumn.setLayout(new BoxLayout(leftColumn, BoxLayout.Y_AXIS));
         leftColumn.add(dishesSection);
-        leftColumn.add(Box.createVerticalStrut(25));
+        leftColumn.add(Box.createVerticalStrut(15)); // tighter gap
         leftColumn.add(dessertsSection);
 
         JPanel middleColumn = new JPanel();
@@ -135,7 +115,7 @@ public class Performance extends JFrame {
         leftConstraints.gridy = 0;
         leftConstraints.fill = GridBagConstraints.BOTH;
         leftConstraints.weightx = 0.4;
-        leftConstraints.insets = new Insets(0, 10, 0, 25);
+        leftConstraints.insets = new Insets(0, 5, 0, 15); // tighter
         mainLayout.add(leftColumn, leftConstraints);
 
         GridBagConstraints middleConstraints = new GridBagConstraints();
@@ -143,7 +123,7 @@ public class Performance extends JFrame {
         middleConstraints.gridy = 0;
         middleConstraints.fill = GridBagConstraints.BOTH;
         middleConstraints.weightx = 0.25;
-        middleConstraints.insets = new Insets(0, 0, 0, 25);
+        middleConstraints.insets = new Insets(0, 0, 0, 15); // tighter
         mainLayout.add(middleColumn, middleConstraints);
 
         GridBagConstraints rightConstraints = new GridBagConstraints();
@@ -151,14 +131,15 @@ public class Performance extends JFrame {
         rightConstraints.gridy = 0;
         rightConstraints.fill = GridBagConstraints.BOTH;
         rightConstraints.weightx = 0.35;
-        rightConstraints.insets = new Insets(0, 0, 0, 10);
+        rightConstraints.insets = new Insets(0, 0, 0, 5); // tighter
         mainLayout.add(rightColumn, rightConstraints);
 
         return mainLayout;
     }
 
     private JPanel createGridPanel() {
-        JPanel panel = new JPanel(new GridLayout(0, 2, 18, 18));
+        // 1-column on 15-inch; 2-column only if we later detect more space
+        JPanel panel = new JPanel(new GridLayout(0, 1, 12, 12)); // single column, tighter gaps
         panel.setOpaque(false);
         return panel;
     }
@@ -176,46 +157,48 @@ public class Performance extends JFrame {
         wrapper.setLayout(new BorderLayout());
         wrapper.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-        RoundedPanel header = new RoundedPanel(40);
+        RoundedPanel header = new RoundedPanel(30); // smaller corners
         header.setBackground(new Color(187, 141, 56));
         header.setLayout(new BorderLayout());
-        header.setPreferredSize(new Dimension(0, 65));
+        header.setPreferredSize(new Dimension(0, 45)); // shorter header
 
         JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
         titleLabel.setForeground(new Color(253, 245, 230));
-        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 26));
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 20)); // smaller
         header.add(titleLabel, BorderLayout.CENTER);
 
-        RoundedPanel body = new RoundedPanel(45);
+        RoundedPanel body = new RoundedPanel(35); // smaller corners
         body.setBackground(new Color(230, 210, 205));
         body.setLayout(new BorderLayout());
-        body.setBorder(new EmptyBorder(25, 25, 25, 25));
+        body.setBorder(new EmptyBorder(15, 15, 15, 15)); // tighter padding
         body.add(bodyContent, BorderLayout.CENTER);
 
         wrapper.add(header, BorderLayout.NORTH);
         wrapper.add(body, BorderLayout.CENTER);
         return wrapper;
     }
+    
+
 
     private JPanel createOrderSection() {
         JPanel wrapper = new JPanel();
         wrapper.setOpaque(false);
         wrapper.setLayout(new BorderLayout());
 
-        RoundedPanel header = new RoundedPanel(60);
+        RoundedPanel header = new RoundedPanel(40); // smaller
         header.setBackground(new Color(187, 141, 56));
         header.setLayout(new BorderLayout());
-        header.setPreferredSize(new Dimension(0, 80));
+        header.setPreferredSize(new Dimension(0, 55)); // shorter
 
         JLabel titleLabel = new JLabel("Order", SwingConstants.CENTER);
         titleLabel.setForeground(new Color(253, 245, 230));
-        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 28));
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 22)); // smaller
         header.add(titleLabel, BorderLayout.CENTER);
 
-        RoundedPanel body = new RoundedPanel(45);
+        RoundedPanel body = new RoundedPanel(35); // smaller corners
         body.setBackground(new Color(230, 210, 205));
-        body.setLayout(new BorderLayout(0, 20));
-        body.setBorder(new EmptyBorder(25, 25, 25, 25));
+        body.setLayout(new BorderLayout(0, 15)); // tighter gap
+        body.setBorder(new EmptyBorder(15, 15, 15, 15)); // tighter
 
         orderTable = new JTable(orderTableModel);
         orderTable.setFillsViewportHeight(true);
@@ -223,17 +206,17 @@ public class Performance extends JFrame {
         orderTable.setShowGrid(false);
         orderTable.setOpaque(false);
         orderTable.setBackground(new Color(230, 210, 205));
-        orderTable.setFont(new Font("Serif", Font.PLAIN, 15));
+        orderTable.setFont(new Font("Serif", Font.PLAIN, 13)); // smaller
         orderTable.setForeground(new Color(70, 37, 78));
-        orderTable.setRowHeight(26);
+        orderTable.setRowHeight(22); // shorter rows
         orderTable.getTableHeader().setReorderingAllowed(false);
         orderTable.getTableHeader().setResizingAllowed(false);
-        orderTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
+        orderTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 13));
         orderTable.getTableHeader().setForeground(new Color(70, 37, 78));
         orderTable.getTableHeader().setBackground(new Color(215, 190, 185));
-        orderTable.getColumnModel().getColumn(0).setPreferredWidth(150);
-        orderTable.getColumnModel().getColumn(1).setPreferredWidth(60);
-        orderTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+        orderTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+        orderTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+        orderTable.getColumnModel().getColumn(2).setPreferredWidth(80);
 
         JScrollPane orderScrollPane = new JScrollPane(orderTable);
         orderScrollPane.setOpaque(false);
@@ -242,41 +225,65 @@ public class Performance extends JFrame {
         orderScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         totalLabel = new JLabel("Grand Total: P 0.00");
-        totalLabel.setFont(new Font("Georgia", Font.BOLD, 18));
+        totalLabel.setFont(new Font("Georgia", Font.BOLD, 16)); // smaller
         totalLabel.setForeground(new Color(70, 37, 78));
         totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        RoundedButton confirmButton = new RoundedButton("Confirm Payment", 35);
-        confirmButton.setBackground(new Color(187, 141, 56));
+        RoundedButton confirmButton = new RoundedButton("Confirm Payment", 25); // smaller
+        confirmButton.setBackground(new Color(187, 141, 56));    
+        
         confirmButton.addActionListener(e -> {
             if (!hasSelectedItems()) {
                 JOptionPane.showMessageDialog(this, "Please choose at least one item before confirming.", "Empty Order", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 int choice = JOptionPane.showConfirmDialog(
-                    this,
-                    "Proceed with payment?",
-                    "Confirm Payment",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE
+                        this,
+                        "Proceed with payment?",
+                        "Confirm Payment",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE
+                        
                 );
-
+                showPaymentDialog();
                 if (choice == JOptionPane.OK_OPTION) {
                     for (JSpinner spinner : quantitySpinners) {
+                        
                         spinner.setValue(0);
                     }
+                    
                     JOptionPane.showMessageDialog(this, "Order confirmed! Thank you for visiting Giorno's.", "Payment", JOptionPane.INFORMATION_MESSAGE);
                     updateTotal();
                 }
             }
+        });
+        
+        
+        
+        RoundedButton clearButton = new RoundedButton("Clear Receipt", 30); // smaller
+        clearButton.setBackground(new Color(153, 102, 204));
+        clearButton.addActionListener(e -> {
+        orderTableModel.setRowCount(0);
+        ClearReceipt.clearingReceipt();
+        for (JSpinner spinner : quantitySpinners) {
+                spinner.setValue(0);
+            }
+             JOptionPane.showMessageDialog(this, "Receipt cleared!", "Receipt", JOptionPane.INFORMATION_MESSAGE);
+                
         });
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setOpaque(false);
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
         bottomPanel.add(totalLabel);
-        bottomPanel.add(Box.createVerticalStrut(15));
+        bottomPanel.add(Box.createVerticalStrut(10)); // tighter
         confirmButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         bottomPanel.add(confirmButton);
+        
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setOpaque(false);
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0)); // tighter
+        buttonsPanel.add(clearButton);
+        bottomPanel.add(buttonsPanel);
 
         body.add(orderScrollPane, BorderLayout.CENTER);
         body.add(bottomPanel, BorderLayout.SOUTH);
@@ -284,6 +291,64 @@ public class Performance extends JFrame {
         wrapper.add(header, BorderLayout.NORTH);
         wrapper.add(body, BorderLayout.CENTER);
         return wrapper;
+    }
+    
+    private void showPaymentDialog() {
+
+        double totalAmount = 0.0;
+        for (JSpinner spinner : quantitySpinners) {
+            MenuItem item = spinnerItemMap.get(spinner);
+            int quantity = (Integer) spinner.getValue();
+            totalAmount += item.getPrice() * quantity;
+        }
+
+        JTextField amountGivenField = new JTextField(10);
+        JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
+
+        panel.add(new JLabel("Total Amount:"));
+        panel.add(new JLabel("₱" + totalAmount));
+        panel.add(new JLabel("Amount Given:"));
+        panel.add(amountGivenField);
+        
+
+        int result = JOptionPane.showConfirmDialog(
+                null,
+                panel,
+                "Enter Payment",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+
+            try {
+                double amountGiven = Double.parseDouble(amountGivenField.getText());
+
+                if (amountGiven < totalAmount) {
+                    JOptionPane.showMessageDialog(null,
+                            "Insufficient funds!",
+                            "Payment Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    showPaymentDialog();
+
+                } else {
+                    double change = amountGiven - totalAmount;
+                    JOptionPane.showMessageDialog(this, "Payment successful!\nChange: ₱" + String.format("%.2f", change));
+                    for (JSpinner spinner : quantitySpinners) spinner.setValue(0);
+                    orderTableModel.setRowCount(0);
+                    updateTotal();
+
+                }
+                
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this,
+                        "Please enter a valid number.",
+                        "Invalid Input",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
     }
 
     public void updateTotal() {
@@ -305,26 +370,16 @@ public class Performance extends JFrame {
     }
 
     private void updateOrderList() {
-        if (orderTableModel == null) {
-            return;
-        }
-
         orderTableModel.setRowCount(0);
         boolean hasItems = false;
 
         for (JSpinner spinner : quantitySpinners) {
             MenuItem item = spinnerItemMap.get(spinner);
-            if (item != null) {
-                int quantity = (Integer) spinner.getValue();
-                if (quantity > 0) {
-                    double subtotal = quantity * item.getPrice();
-                    orderTableModel.addRow(new Object[]{
-                        item.getName(),
-                        quantity,
-                        "P " + String.format("%.2f", subtotal)
-                    });
-                    hasItems = true;
-                }
+            int quantity = (Integer) spinner.getValue();
+            if (quantity > 0) {
+                double subtotal = item.getPrice() * quantity;
+                orderTableModel.addRow(new Object[]{item.getName(), quantity, String.format("₱%.2f", subtotal)});
+                hasItems = true;
             }
         }
 
@@ -335,17 +390,13 @@ public class Performance extends JFrame {
 
     private boolean hasSelectedItems() {
         for (JSpinner spinner : quantitySpinners) {
-            if ((Integer) spinner.getValue() > 0) {
-                return true;
-            }
+            if ((Integer) spinner.getValue() > 0) return true;
         }
         return false;
     }
 
     public void setMenuItems(MenuItem[] items) {
-        if (items == null) {
-            return;
-        }
+        if (items == null) return;
 
         dishesPanel.removeAll();
         dessertsPanel.removeAll();
@@ -356,13 +407,14 @@ public class Performance extends JFrame {
         orderTableModel.setRowCount(0);
 
         for (MenuItem item : items) {
-            if ("Dishes".equalsIgnoreCase(item.getCategory())) {
+            String category = item.getCategory();
+            if ("Dishes".equalsIgnoreCase(category)) {
                 dishesPanel.add(createDishDessertCard(item));
-            } else if ("Desserts".equalsIgnoreCase(item.getCategory())) {
+            } else if ("Desserts".equalsIgnoreCase(category)) {
                 dessertsPanel.add(createDishDessertCard(item));
             } else {
                 drinksPanel.add(createDrinkCard(item));
-                drinksPanel.add(Box.createVerticalStrut(15));
+                drinksPanel.add(Box.createVerticalStrut(10)); // tighter
             }
         }
 
@@ -378,37 +430,34 @@ public class Performance extends JFrame {
     }
 
     private JPanel createDishDessertCard(MenuItem item) {
-        RoundedPanel card = new RoundedPanel(35);
+        RoundedPanel card = new RoundedPanel(25); // smaller corners
         card.setBackground(new Color(247, 234, 232));
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setPreferredSize(new Dimension(220, 150));
-        card.setBorder(new EmptyBorder(22, 22, 22, 22));
+        card.setPreferredSize(new Dimension(180, 120)); // smaller card
+        card.setBorder(new EmptyBorder(12, 12, 12, 12)); // tighter
 
         JLabel titleLabel = createTitleLabel(item.getName());
         JLabel priceLabel = createPriceLabel(item.getPrice());
         JPanel controlsPanel = createControlsPanel(item);
-
-        titleLabel.setFont(new Font("Georgia", Font.BOLD, 16));
-        priceLabel.setFont(new Font("Serif", Font.PLAIN, 14));
 
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         controlsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         card.add(titleLabel);
-        card.add(Box.createVerticalStrut(8));
+        card.add(Box.createVerticalStrut(5));
         card.add(priceLabel);
-        card.add(Box.createVerticalStrut(12));
+        card.add(Box.createVerticalStrut(8));
         card.add(controlsPanel);
 
         return card;
     }
 
     private JPanel createDrinkCard(MenuItem item) {
-        RoundedPanel card = new RoundedPanel(30);
+        RoundedPanel card = new RoundedPanel(20); // smaller corners
         card.setBackground(new Color(247, 234, 232));
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBorder(new EmptyBorder(20, 22, 20, 22));
+        card.setBorder(new EmptyBorder(12, 15, 12, 15)); // tighter
 
         JLabel titleLabel = createTitleLabel(item.getName());
         JLabel priceLabel = createPriceLabel(item.getPrice());
@@ -419,9 +468,9 @@ public class Performance extends JFrame {
         controlsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         card.add(titleLabel);
-        card.add(Box.createVerticalStrut(6));
+        card.add(Box.createVerticalStrut(4));
         card.add(priceLabel);
-        card.add(Box.createVerticalStrut(10));
+        card.add(Box.createVerticalStrut(6));
         card.add(controlsPanel);
 
         return card;
@@ -429,7 +478,7 @@ public class Performance extends JFrame {
 
     private JLabel createTitleLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setFont(new Font("Georgia", Font.BOLD, 18));
+        label.setFont(new Font("Georgia", Font.BOLD, 14)); // smaller
         label.setForeground(new Color(79, 34, 91));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         return label;
@@ -437,37 +486,36 @@ public class Performance extends JFrame {
 
     private JLabel createPriceLabel(double price) {
         JLabel label = new JLabel("P " + String.format("%.2f", price));
-        label.setFont(new Font("Serif", Font.PLAIN, 16));
+        label.setFont(new Font("Serif", Font.PLAIN, 13)); // smaller
         label.setForeground(new Color(102, 57, 81));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         return label;
     }
 
     private JPanel createControlsPanel(MenuItem item) {
-        JPanel controls = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        JPanel controls = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0)); // tighter
         controls.setOpaque(false);
 
         JLabel qtyLabel = new JLabel("Qty");
-        qtyLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        qtyLabel.setFont(new Font("SansSerif", Font.PLAIN, 12)); // smaller
         qtyLabel.setForeground(new Color(79, 34, 91));
 
-        SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 99, 1);
-        JSpinner spinner = new JSpinner(spinnerModel);
-        spinner.setPreferredSize(new Dimension(55, 30));
-        spinner.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, 99, 1));
+        spinner.setPreferredSize(new Dimension(45, 24)); // smaller
+        spinner.setFont(new Font("SansSerif", Font.PLAIN, 12));
+
         JComponent editor = spinner.getEditor();
         if (editor instanceof JSpinner.DefaultEditor) {
-            JSpinner.DefaultEditor defaultEditor = (JSpinner.DefaultEditor) editor;
-            defaultEditor.getTextField().setColumns(3);
-            defaultEditor.getTextField().setHorizontalAlignment(JTextField.CENTER);
+            ((JSpinner.DefaultEditor) editor).getTextField().setColumns(2);
+            ((JSpinner.DefaultEditor) editor).getTextField().setHorizontalAlignment(JTextField.CENTER);
         }
 
         JLabel subtotalTitle = new JLabel("Subtotal:");
-        subtotalTitle.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        subtotalTitle.setFont(new Font("SansSerif", Font.PLAIN, 12));
         subtotalTitle.setForeground(new Color(79, 34, 91));
 
         JLabel subtotalLabel = new JLabel("P 0.00");
-        subtotalLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        subtotalLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
         subtotalLabel.setForeground(new Color(79, 34, 91));
 
         quantitySpinners.add(spinner);
@@ -475,8 +523,7 @@ public class Performance extends JFrame {
 
         spinner.addChangeListener(e -> {
             int quantity = (Integer) spinner.getValue();
-            double subtotal = item.getPrice() * quantity;
-            subtotalLabel.setText("P " + String.format("%.2f", subtotal));
+            subtotalLabel.setText("P " + String.format("%.2f", item.getPrice() * quantity));
             updateTotal();
         });
 
@@ -484,8 +531,12 @@ public class Performance extends JFrame {
         controls.add(spinner);
         controls.add(subtotalTitle);
         controls.add(subtotalLabel);
+
         return controls;
     }
+    
+    
+
 
     private static class MainBackgroundPanel extends JPanel {
         @Override
@@ -540,9 +591,9 @@ public class Performance extends JFrame {
             setContentAreaFilled(false);
             setBorderPainted(false);
             setForeground(new Color(253, 245, 230));
-            setFont(new Font("Georgia", Font.BOLD, 16));
+            setFont(new Font("Georgia", Font.BOLD, 14)); // smaller
             setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            setMargin(new Insets(12, 24, 12, 24));
+            setMargin(new Insets(8, 16, 8, 16)); // tighter
         }
 
         @Override
@@ -563,23 +614,17 @@ public class Performance extends JFrame {
         }
     }
 
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            Performance frame = new Performance();
+            Framing frame = new Framing();
 
-            MenuItem[] menuItems = {
-                new MenuItem("Trattoria Risotto", 240.00, "Dishes"),
-                new MenuItem("Requiem Pasta", 210.00, "Dishes"),
-                new MenuItem("Golden Caprese", 180.00, "Dishes"),
-                new MenuItem("Panna Cotta Giorno", 120.00, "Desserts"),
-                new MenuItem("Amaretto Dream", 115.00, "Desserts"),
-                new MenuItem("Passione Gelato", 130.00, "Desserts"),
-                new MenuItem("Lavender Latte", 90.00, "Drinks"),
-                new MenuItem("Rose Quartz Fizz", 110.00, "Drinks"),
-                new MenuItem("Grape Stand Spritz", 105.00, "Drinks")
-            };
+            List<MenuItem> menu = new ArrayList<>();
+            menu.addAll(new DISHES().loadItems());
+            menu.addAll(new DESSERT().loadItems());
+            menu.addAll(new DRINKS().loadItems());
 
-            frame.setMenuItems(menuItems);
+            frame.setMenuItems(menu.toArray(new MenuItem[0]));
         });
     }
 }
